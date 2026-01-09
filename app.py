@@ -1,3 +1,5 @@
+import warnings
+warnings.filterwarnings("ignore")
 import streamlit as st
 import google.generativeai as genai
 from pypdf import PdfReader
@@ -18,27 +20,81 @@ st.set_page_config(
 # Custom CSS for a premium feel
 st.markdown("""
 <style>
+    /* Main Background */
     .stApp {
-        background-color: #0e1117;
-        color: #ffffff;
+        background-color: #ffffff;
+        color: #1a1a1a;
+        font-family: 'Inter', sans-serif;
     }
-    .stChatMessage {
-        background-color: #1e2329;
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-    .stTextInput input {
-        color: #ffffff;
-    }
-    /* Add a subtle gradient to the sidebar */
+    
+    /* Sidebar Styling */
     section[data-testid="stSidebar"] {
-        background: linear-gradient(#1e2329, #0e1117);
+        background-color: #f8f9fa;
+        border-right: 1px solid #e9ecef;
     }
-    h1 {
-        background: -webkit-linear-gradient(45deg, #4285F4, #9B72CB, #D96570);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    
+    /* Headers */
+    h1, h2, h3 {
+        color: #1a1a1a;
+        font-weight: 700;
+    }
+    
+    /* Chat Messages */
+    .stChatMessage {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+    }
+    
+    /* User Message Specific (Optional - if we want distinction) */
+    div[data-testid="stChatMessage"]:nth-of-type(odd) {
+       background-color: #e8f0fe;
+       border-color: #d2e3fc;
+    }
+
+    /* Inputs */
+    .stTextInput input, .stTextArea textarea {
+        background-color: #ffffff !important;
+        color: #1a1a1a !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 8px !important;
+    }
+    
+    .stTextInput input:focus, .stTextArea textarea:focus {
+        border-color: #4285F4 !important;
+        box-shadow: 0 0 0 1px #4285F4 !important;
+    }
+    
+    /* Buttons */
+    .stButton button {
+        background-color: #4285F4;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton button:hover {
+        background-color: #3367d6;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* File Uploader */
+    [data-testid="stFileUploader"] {
+        background-color: #f8f9fa;
+        border: 1px dashed #ced4da;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    
+    [data-testid="stFileUploader"]:hover {
+        border-color: #4285F4;
+        background-color: #e8f0fe;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -52,7 +108,7 @@ def get_pdf_text(pdf_docs):
     return text
 
 def get_gemini_response(input_text, pdf_content, prompt_chain):
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.5-flash')
     # Construct a prompt that includes context. 
     # For a simple chat, we can just prepend the context or use a robust prompt strategy.
     
