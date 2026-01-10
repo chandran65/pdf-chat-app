@@ -109,7 +109,7 @@ def get_pdf_text(pdf_docs):
     return text
 
 def get_gemini_response(input_text, pdf_content, prompt_chain):
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash-exp')
     # Construct a prompt that includes context. 
     # For a simple chat, we can just prepend the context or use a robust prompt strategy.
     

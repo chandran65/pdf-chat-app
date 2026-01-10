@@ -6,7 +6,7 @@ def agent_research_summarizer(text):
     Agent 1: Research Analyst.
     Reads the raw PDF text and creates a structured summary/brief for the writer.
     """
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash-exp')
     prompt = f"""
     You are an expert Research Analyst. Your goal is to analyze the provided text and produce a detailed content brief for a blog writer.
     
@@ -30,7 +30,7 @@ def agent_blog_writer(summary):
     Agent 2: Professional Blog Writer.
     Takes the brief from the Research Analyst and writes the final post.
     """
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash-exp')
     prompt = f"""
     You are a Senior Tech Blog Writer. You have just received a Content Brief from your Research Analyst.
     Your task is to write a high-quality, engaging blog post based *only* on this brief.
